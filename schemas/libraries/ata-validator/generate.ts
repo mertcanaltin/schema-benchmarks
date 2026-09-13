@@ -14,15 +14,6 @@ import { getAtaValidatorProductSchema } from "./index.ts";
 // spelling, so a compiled module cannot carry it: `created` is checked as a
 // plain object there. Stripping it here rather than keeping a second copy of
 // the schema by hand is what stops this module and ./index.ts from drifting.
-function withoutCustomKeywords(schema: unknown): unknown {
-  if (Array.isArray(schema)) return schema.map(withoutCustomKeywords);
-  if (schema === null || typeof schema !== "object") return schema;
-  return Object.fromEntries(
-    Object.entries(schema as Record<string, unknown>)
-      .filter(([key]) => key !== "instanceof" && key !== "typeof")
-      .map(([key, value]) => [key, withoutCustomKeywords(value)]),
-  );
-}
 
 const outDir = path.join(import.meta.dirname, "compiled");
 fs.mkdirSync(outDir, { recursive: true });
@@ -32,7 +23,11 @@ fs.mkdirSync(outDir, { recursive: true });
 const schemaPath = path.join(outDir, "product.schema.json");
 fs.writeFileSync(
   schemaPath,
-  `${JSON.stringify(withoutCustomKeywords(getAtaValidatorProductSchema()), null, 2)}\n`,
+  `${JSON.stringify(
+    getAtaValidatorProductSchema(),
+    (key, value) => (key === "instanceof" || key === "typeof" ? undefined : value),
+    2,
+  )}\n`,
 );
 
 const result = await build({
