@@ -12355,7 +12355,7 @@ const { t, OPTIONAL } = (/* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(
 	};
 })))(), 1)).default;
 //#endregion
-//#region ../schemas/libraries/ata-validator/download.ts
+//#region ../schemas/libraries/ata-validator/download/index.ts
 const dateSchema = t.object({}, { instanceof: "Date" });
 const imageSchema = t.object({
 	id: t.number(),
