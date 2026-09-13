@@ -11,13 +11,14 @@
   "scripts": {
     "gen:paseri": "node ./libraries/@paseri/compiler/generate.ts",
     "gen:zod-compiler": "node ./libraries/zod-compiler/generate.ts",
-    "prebuild": "pnpm run gen:paseri && pnpm run gen:zod-compiler",
+    "prebuild": "pnpm run gen:paseri && pnpm run gen:zod-compiler && pnpm run gen:ata-validator",
     "postbuild": "pnpm run gen:json-schemas",
     "gen:json-schemas": "node ./scripts/gen-accepted-json-schemas.ts",
     "build": "tsdown",
     "coverage": "vitest run --coverage",
     "typecheck": "tsc",
-    "test": "vitest"
+    "test": "vitest",
+    "gen:ata-validator": "node ./libraries/ata-validator/generate.ts"
   },
   "dependencies": {
     "@ark/json-schema": "^0.0.7",

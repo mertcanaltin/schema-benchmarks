@@ -4,7 +4,10 @@ import { t } from "ata-validator/t";
 
 import type { ProductData } from "#src";
 
-export function getAtaValidatorSchema() {
+// The schema itself, exported so generate.ts compiles the same one this entry
+// validates with. Keeping them in one place is what stops the checked-in
+// compiled module from drifting when the dependency moves.
+export function getAtaValidatorProductSchema() {
   const dateSchema = t.object({}, { instanceof: "Date" });
 
   const imageSchema = t.object({
@@ -38,5 +41,9 @@ export function getAtaValidatorSchema() {
     ratings: t.array(ratingSchema),
   });
 
-  return withKeywords(new Validator(productSchema)) as Validator<ProductData>;
+  return productSchema;
+}
+
+export function getAtaValidatorSchema() {
+  return withKeywords(new Validator(getAtaValidatorProductSchema())) as Validator<ProductData>;
 }
